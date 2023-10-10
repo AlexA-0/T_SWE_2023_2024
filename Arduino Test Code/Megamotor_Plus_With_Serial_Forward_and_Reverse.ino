@@ -1,4 +1,4 @@
-// Created by Gunider M. August 11, 2021//
+// Created by Gunider M. August 11, 2021; modified by Matteo F and Alex A, October 6, 2023//
 
 //pin assignment
 int PWM_A = 11; 
@@ -29,20 +29,22 @@ void setup() {
 
 void loop() {
 
-  Serial.println("Direction:");
   while (Serial.available() == 0) {}     //wait for data available
   char teststr = Serial.read();  //read until timeout
   if (teststr == 'w') {
+    Serial.println("Direction Change");
+    digitalWrite(EnablePin1, LOW); //disable the board (freewheeling)
+    delay(200);
     Serial.println("Extending");
-      digitalWrite(PWM_A, LOW); digitalWrite(PWM_B, HIGH); //Extend
-  } else {
+    digitalWrite(PWM_A, LOW); digitalWrite(PWM_B, HIGH); //Extend
+    digitalWrite(EnablePin1, HIGH); //enable the board
+  } else if (teststr == 'e') {
+    Serial.println("Direction Change");
+    digitalWrite(EnablePin1, LOW); //disable the board (freewheeling)
+    delay(200);
     Serial.println("Retracting");
-    digitalWrite(PWM_A, HIGH); digitalWrite(PWM_B, LOW); //Extend
+    digitalWrite(PWM_A, HIGH); digitalWrite(PWM_B, LOW); //Retract
+    digitalWrite(EnablePin1, HIGH); //enable the board
   }
 
 }
-
-
-
-
-
